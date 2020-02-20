@@ -1,7 +1,9 @@
-import java.net.ServerSocket;
+
 import java.net.Socket;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.net.ServerSocket;
+
 
 class Token {
 
@@ -16,7 +18,7 @@ class Token {
         @Override
         public void run() {
             try {
-                ServerSocket servidor = new ServerSocket(6000 + nodo);
+                ServerSocket servidor = new ServerSocket(4000 + nodo);
                 Socket conexion = servidor.accept(); // Aqui se bloquea el thread hasta que recibe una conexión
                 // System.out.println("Aqui debe de iniciar");
                 entrada = new DataInputStream(conexion.getInputStream());
@@ -44,7 +46,7 @@ class Token {
                 for (;;) {
                     // Si no falla entra y cierra.
                     try {
-                        conexion = new Socket("localhost", 6000 + ((nodo + 1) % 4));
+                        conexion = new Socket("localhost", 4000 + ((nodo + 1) % 4));
                         break;
                     }
                     // Si falla la conexion espera
@@ -77,10 +79,10 @@ class Token {
                     // Imprimira cada modulo de 1000 para el nodo 0
                     // 1001 para el nodo 1
                     // 1002 para el nodo 2...
-                    if ((token % (10001)) == 0) {
-                        System.out.println(token);
-                        salida.writeLong(token);
+                    if ((token % (1000001)) == 0) {
+                        System.out.println("Valor: " + token);
                     }
+                    salida.writeLong(token);
                 }
             }
         } catch (Exception e) {
