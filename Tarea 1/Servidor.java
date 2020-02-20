@@ -15,12 +15,7 @@ class Servidor {
     static int nodo;
     static Object lock;
     static int checksum;
-    
-    
-    
-    
-    
-    
+
     // lee del DataInputStream todos los bytes requeridos
     static class Worker extends Thread {
         public Worker(Socket conexion) {
@@ -34,7 +29,7 @@ class Servidor {
                 Socket conexion = servidor.accept();
                 // Mandar las matrices a los clientes
                 // inicializa las matrices A y B
-                //Inserte código aquí
+                // Inserte código aquí
                 for (int i = 0; i < N; i++)
                     for (int j = 0; j < N; j++) {
                         A[i][j] = 2 * i - j;
@@ -51,9 +46,9 @@ class Servidor {
         }
     }
 
-    static void despluega_matriz(double[][] m){
-        for(int i = 0; i < N; i++){
-            for( int j=0; j < N; j++){
+    static void despluega_matriz(double[][] m) {
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
                 System.out.println(m[i][j] + ",");
             }
             System.out.println();
@@ -61,28 +56,51 @@ class Servidor {
         System.out.println();
     }
 
-    public static void main(String[] args) throws Exception{
+    public static void main(String[] args) throws Exception {
         try {
             // Verifica que haya un argumento (el numero de nodo dnde ejecuta)
             if (args.length != 1) {
                 System.err.println("Se necesita el número de nodo.");
                 System.exit(-1);
-            } 
-            else {
-                nodo = Integer.valueOf(args[0]);
-                Worker w = new Worker();
-                w.start();
-                Socket conexion = null;
-                //Esperando a los 4 nodos 0 - 3
-                for (;;) {
-                    try {
-                        conexion = new Socket("localhost",6000);
-                        break;
-                    } catch (Exception e) {
-                        Thread.sleep(100);
-                    }
+            }
+            // Obtiene el número de nodo
+            nodo = Integer.valueOf(args[0]);
+            //Hacer las funciones para cada número de nodo.
+            if (nodo ==0 ){
+
+            }
+            else if(nodo ==1){
+
+            }
+            else if( nodo == 2){
+
+            }
+            else if( nodo == 3){
+
+            }
+
+            //Si el servidor no esta ejecutando, reintenta la conexion
+            Socket conexion = null;
+            // Esperando a los 4 nodos 0 - 3
+            for (;;) {
+                try {
+                    conexion = new Socket(nodo_0, 6000);
+                    break;
+                } catch (Exception e) {
+                    Thread.sleep(100);
                 }
             }
+
+            DataOutputStream salida = new DataOutputStream(conexion.getOutputStream());
+            DataInputStream entrada = new DataInputStream(conexion.getInputStream());
+
+            //Envia al servidor el numero de nodo
+            salida.write(nodo);
+
+            //Recibe el servidor las partes de las matrices A y B
+            // Notar partes siempre quedan en la parte superior de las matrices
+
+            byte[] a = b
 
         } catch (Exception e) {
             // TODO: handle exception
@@ -95,8 +113,8 @@ class Servidor {
             w.start();
         }
 
-        if(nodo == 1){
-            
+        if (nodo == 1) {
+
         }
     }
 }

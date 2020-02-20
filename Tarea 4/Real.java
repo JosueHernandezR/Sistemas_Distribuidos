@@ -3,7 +3,8 @@ import java.net.Socket;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 
-public class Token {
+public class Real {
+    
     static DataInputStream entrada = null;  // Inicia en el nodo 0
     static DataOutputStream salida = null;  // 0 al 1
     static long token = 0;                  // Token para incrementar
