@@ -5,52 +5,60 @@ import java.nio.ByteBuffer;
 
 class Cliente {
 
-    static int N = 1000;
-    static int[][] A = new int[N/2][N];
-    static int[][] B = new int[N/2][N];
-    static int[][] BT = new int[N][N/2];
-    static int[][] C = new int[N/2][N/2];
+    static int N = 4;
+    static double[][] A = new double[N/2][N];
+    static double[][] B = new double[N/2][N];
+    //static double[][] BT = new double[N][N/2];
+    static double[][] C = new double[N/2][N/2];
     // lee del DataInputStream todos los bytes requeridos
-
-    static void read(DataInputStream f, byte[] b, int posicion, int longitud) throws Exception {
-        while (longitud > 0) {
-            int n = f.read(b, posicion, longitud);
-            posicion += n;
-            longitud -= n;
-        }
-    }
+    // public static void read() throws Exception {
+    //     while (longitud > 0) {
+    //         int n = f.read(b, posicion, longitud);
+    //         posicion += n;
+    //         longitud -= n;
+    //     }
+    // }
 
     public static void main(String[] args) throws Exception {
-        Socket conexion = conexion = new Socket("localhost", 5000);
 
+        if(args.length != 1){
+            System.err.println("Se espera el numero de nodo.");
+            System.exit(-1);
+        }
+        //Recibe como argumento el numero de nodo que es
+        int nodo = Integer.valueOf(args[0]);
+        Socket conexion = new Socket("localhost",50000);
         DataOutputStream salida = new DataOutputStream(conexion.getOutputStream());
         DataInputStream entrada = new DataInputStream(conexion.getInputStream());
-
-        // env�a un entero de 32 bits
-        salida.writeInt(123);
-
-        // envia un n�mero punto flotante
-        salida.writeDouble(1234567890.1234567890);
-
-        // envia una cadena
-        salida.write("hola".getBytes());
-
-        // recibe una cadena
-        byte[] buffer = new byte[4];
-        read(entrada, buffer, 0, 4);
-        System.out.println(new String(buffer, "UTF-8"));
-
-        // envia 5 n�meros punto flotante
-        ByteBuffer b = ByteBuffer.allocate(5 * 8);
-        b.putDouble(1.1);
-        b.putDouble(1.2);
-        b.putDouble(1.3);
-        b.putDouble(1.4);
-        b.putDouble(1.5);
-        byte[] a = b.array();
-        salida.write(a);
-        salida.flush();
-
+        //Manda al servidor cual es el nodo
+        salida.writeInt(nodo);
+        //Se reciben los datos
+        System.out.println("Esperando datos");
+        for(int i=0; i<N/2; i++){
+            for (int j = 0; j < N; j++) {
+                A[i][j]=entrada.readDouble();}
+        }
+        for(int i=0; i<N/2; i++){
+            for (int j = 0; j < N; j++){
+                B[i][j]=entrada.readDouble();}
+        }
+        System.out.println("Recibi datos");
+        //Se multiplica la matriz
+        for (int i = 0; i < N/2; i++) {
+            for (int j = 0; j < N/2; j++) {
+                double suma = 0;
+                for (int k = 0; k < N; k++)
+                    suma = suma + A[i][k] * B[j][k];
+                C[i][j] = suma;
+            }
+        }
+        //Se envian los datos al servidor
+        for(int i=0; i<N/2; i++){
+            for (int j = 0; j < N/2; j++){
+                salida.writeDouble(C[i][j]);
+            }
+        }
+        System.out.println("Los datos han sido devueltos al servidor.");
         salida.close();
         entrada.close();
         conexion.close();
