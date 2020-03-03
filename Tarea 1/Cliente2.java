@@ -6,7 +6,7 @@ import java.nio.ByteBuffer;
 class Cliente2
 {
   //Declaracion de variables globales
-  static int N = 4;
+  static int N = 1000;
   static double[][] A = new double[N/2][N];
   static double[][] B = new double[N/2][N];
   static double[][] C = new double[N/2][N/2];

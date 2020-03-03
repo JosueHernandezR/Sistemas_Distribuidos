@@ -9,13 +9,14 @@ class Servidor {
 
 
     //Variables globales
-    static int N = 4;
+    static int N = 500;
     static double[][] A = new double[N][N];
     static double[][] B = new double[N][N];
     static double[][] BT = new double[N][N];
     static double[][] C = new double[N][N];
     static int n = 0;
-    static Object lock = new Object();
+    private final static Object lock = new Object();
+    
     //Igualar a 0 para evitar errores.
     static int checksum = 0;
 
@@ -190,6 +191,7 @@ class Servidor {
             Socket conexion = servidor.accept();
             Worker w = new Worker(conexion);
             w.start();
+            System.out.println("Se recibió el nodo " + i);
         }
 
         //Cacula el primer cuadrante 0,0
@@ -208,6 +210,7 @@ class Servidor {
             //Se espera a que se sincronize
             synchronized (lock) {
                 n++;
+                System.out.println(n);
                 //Si la longitud de la matriz es menor o igual a 4 se imprimen las matrices
                 if(n==4&&N<=4){
                     //Matriz A
@@ -238,10 +241,11 @@ class Servidor {
                     break;
                     //Si no se calcula el checksum y se imprime
                 }
-                else if(n==4&&N==500){
+                
+                else if(n==4&&N>4){
                     for (int i = 0; i < N; i++) {
                         for (int j = 0; j < N; j++) {
-                            checksum += C[i][j]; 
+                            checksum += C[i][j];
                         }
                     }
                     System.out.println(checksum);

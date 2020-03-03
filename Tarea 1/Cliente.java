@@ -5,7 +5,7 @@ import java.nio.ByteBuffer;
 
 class Cliente {
 
-    static int N = 4;
+    static int N = 500;
     static double[][] A = new double[N/2][N];
     static double[][] B = new double[N/2][N];
     //static double[][] BT = new double[N][N/2];

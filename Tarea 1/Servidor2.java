@@ -8,7 +8,7 @@ import java.nio.ByteBuffer;
 class Servidor2{
   /* VARIABLES GLOBALES */
   //N tamaño de matrices
-  static int N = 4;
+  static int N = 1000;
   static double[][] A = new double[N][N];
   static double[][] B = new double[N][N];
   static double[][] BT = new double[N][N];
@@ -117,6 +117,7 @@ class Servidor2{
       Socket conexion = servidor.accept();
       Worker w = new Worker(conexion);
       w.start();
+
     }
     //Calculamos el primer cuadrante de la matriz C
     for (int i = 0; i < N/2; i++) {
@@ -163,7 +164,7 @@ class Servidor2{
        //Se sale del ciclo infinito
         break;
         //Si no se calcula el checksum y se imprime
-        }else if(n==4&&N==500){
+        }else if(n>=4&&N>4){
           for (int i = 0; i < N; i++) {
             for (int j = 0; j < N; j++) {
               checksum += C[i][j]; 
