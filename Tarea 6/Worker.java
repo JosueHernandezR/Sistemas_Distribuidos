@@ -23,7 +23,7 @@ public class Worker extends Thread {
 
     public double[][] multiplicarMatriz(double[][]A, double[][]B){
         double[][] C = new double[this.tam/2][this.tam/2];
-        for(int i = 0; i < tam; i++)
+        for(int i = 0; i < tam/2; i++)
             for(int j = 0; j < tam/2; j++)
                 for(int k = 0; k < tam; k++){
                     C[i][j] += A[i][k] * B[j][k];
