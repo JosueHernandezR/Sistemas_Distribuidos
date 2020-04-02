@@ -1,3 +1,4 @@
+import java.rmi.Naming;
 
 public class Worker extends Thread {
 
@@ -35,5 +36,21 @@ public class Worker extends Thread {
             for(int j = 0; j < tam/2; j++){
                 C[i+row][j+col] = R[i][j];
             }
+    }
+    public void run(){
+        try {
+            double[][] Cn;
+            if(nodo != 0){
+                rmi = (RemoteMatrixInterface)Naming.lookup("rmi://localhost:"+puerto+"/nodo"+Integer.valueOf(nodo));
+                Cn = multiplicarMatriz(A.copiaMatriz(row), B.copiaMatriz(col));
+            } else{
+                Cn = new double[tam/2][tam/2];
+                Cn = multiplicarMatriz(A.copiaMatriz(row), B.copiaMatriz(col));
+            }
+            acomoda(C.mat, Cn, row, col, tam);
+        } catch (Exception e) {
+            //TODO: handle exception
+            e.printStackTrace();
+        }
     }
 }
